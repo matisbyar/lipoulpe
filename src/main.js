@@ -175,6 +175,57 @@ const nearParticlesMaterial = new THREE.PointsMaterial( {
 const nearParticles = new THREE.Points( nearParticlesGeometry, nearParticlesMaterial );
 scene.add( nearParticles );
 
+const fishGroup = new THREE.Group();
+scene.add( fishGroup );
+
+const fishCount = 18;
+const fishes = [];
+
+for ( let i = 0; i < fishCount; i++ ) {
+	const fish = new THREE.Group();
+	const bodyLength = 0.09 + Math.random() * 0.05;
+	const bodyRadius = bodyLength * 0.22;
+
+	const body = new THREE.Mesh(
+		new THREE.SphereGeometry( bodyRadius, 8, 8 ),
+		new THREE.MeshStandardMaterial( {
+			color: new THREE.Color().setHSL( 0.52 + Math.random() * 0.08, 0.5, 0.52 ),
+			roughness: 0.55,
+			metalness: 0.08
+		} )
+	);
+	body.scale.set( 1.7, 0.85, 0.7 );
+	body.castShadow = true;
+	body.receiveShadow = true;
+
+	const tail = new THREE.Mesh(
+		new THREE.ConeGeometry( bodyRadius * 0.7, bodyLength * 0.55, 3 ),
+		new THREE.MeshStandardMaterial( {
+			color: 0x9fd9ff,
+			roughness: 0.6,
+			metalness: 0.05
+		} )
+	);
+	tail.rotation.z = Math.PI / 2;
+	tail.position.x = -bodyLength * 0.55;
+	tail.castShadow = true;
+	tail.receiveShadow = true;
+
+	fish.add( body );
+	fish.add( tail );
+	fishGroup.add( fish );
+
+	fishes.push( {
+		mesh: fish,
+		tail,
+		speed: 0.22 + Math.random() * 0.24,
+		radius: 1.35 + Math.random() * 1.65,
+		height: -0.45 + Math.random() * 1.5,
+		phase: Math.random() * Math.PI * 2,
+		bobAmp: 0.06 + Math.random() * 0.08
+	} );
+}
+
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.setSize( width, height );
 renderer.setPixelRatio( Math.min( window.devicePixelRatio, 2 ) );
@@ -242,6 +293,21 @@ function animate( time ) {
 		}
 	}
 	nearParticles.geometry.attributes.position.needsUpdate = true;
+
+	for ( const fishData of fishes ) {
+		const orbit = elapsed * fishData.speed + fishData.phase;
+		const x = Math.cos( orbit ) * fishData.radius;
+		const z = Math.sin( orbit ) * fishData.radius;
+		const y = fishData.height + Math.sin( orbit * 2.2 ) * fishData.bobAmp;
+
+		fishData.mesh.position.set( x, y, z );
+		fishData.mesh.lookAt(
+			x - Math.sin( orbit ) * 0.45,
+			y + Math.cos( orbit * 2.2 ) * fishData.bobAmp * 0.3,
+			z + Math.cos( orbit ) * 0.45
+		);
+		fishData.tail.rotation.y = Math.sin( elapsed * 10 + fishData.phase ) * 0.45;
+	}
 
 	controls.update();
 
