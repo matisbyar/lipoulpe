@@ -2,7 +2,7 @@
     <br>
         🐙
     <br>
-    TP1 - Ocean Scene (Three.js)
+    GFX - Lipoulpe (Three.js)
 </h1>
 
 <h4 align="center">Projet étudiant GFX : scene sous-marine avec modèle 3D, lumière, particules.</h4>
@@ -10,7 +10,6 @@
 <p align="center">
   <a href="#✨-roadmap">Roadmap</a> •
   <a href="#🛠️-utilisation--développement">Utilisation</a> •
-  <a href="#📦-export--import-json">Export/Import JSON</a> •
   <a href="#🕹️-technologies">Technologies</a>
 </p>
 
