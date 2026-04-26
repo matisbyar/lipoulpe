@@ -6,6 +6,7 @@ import { setupResizeHandler } from './core/setupResizeHandler.js';
 import { createLighting } from './features/environment/createLighting.js';
 import { loadEnvironmentMap } from './features/environment/loadEnvironmentMap.js';
 import { createFallbackCube, loadMainModel } from './features/model/loadMainModel.js';
+import { loadSubmarineModel } from './features/model/loadSubmarineModel.js';
 import { createParticles } from './features/particles/createParticles.js';
 import { createFishSchool } from './features/fish/createFishSchool.js';
 import { createMysticRings } from './features/rings/createMysticRings.js';
@@ -95,6 +96,7 @@ if ( lightEntries.length > 0 ) {
 
 const fallbackMesh = createFallbackCube( scene );
 const modelState = loadMainModel( scene, fallbackMesh );
+const submarineState = loadSubmarineModel( scene );
 const particlesState = createParticles( scene );
 const fishState = createFishSchool( scene );
 const ringsState = createMysticRings( scene );
@@ -105,6 +107,7 @@ const animate = createAnimationLoop( {
 	renderer,
 	controls,
 	modelState,
+	submarineState,
 	particlesState,
 	fishState,
 	ringsState

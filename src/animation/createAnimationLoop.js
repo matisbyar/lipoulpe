@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { updateMainModel } from '../features/model/loadMainModel.js';
+import { updateSubmarineModel } from '../features/model/loadSubmarineModel.js';
 import { updateParticles } from '../features/particles/createParticles.js';
 import { updateFishSchool } from '../features/fish/createFishSchool.js';
 import { updateMysticRings } from '../features/rings/createMysticRings.js';
@@ -11,6 +12,7 @@ export function createAnimationLoop( animationState ) {
 		const elapsed = clock.getElapsedTime();
 
 		updateMainModel( animationState.modelState, time, elapsed );
+		updateSubmarineModel( animationState.submarineState, elapsed );
 		updateParticles( animationState.particlesState, time );
 		updateFishSchool( animationState.fishState, elapsed );
 		updateMysticRings( animationState.ringsState, animationState.modelState.animatedObject, elapsed );
